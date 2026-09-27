@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Applicants
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/employer.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <section class="employer-page">
+        <div class="container">
+            <div class="employer-shell">
+                <a href="{% url 'jobs:employer-dashboard' %}" class="employer-back">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to dashboard
+                </a>
+
+                <header class="employer-intro">
+                    <div>
+                        <h1>All applicants</h1>
+                        <p>Everyone who has applied to your open positions.</p>
+                    </div>
+                </header>
+
+                <form method="get" action="" class="employer-filter">
+                    <div class="employer-filter-field">
+                        <label for="status">Application status</label>
+                        <select id="status" name="status" class="form-control">
+                            <option value="">All statuses</option>
+                            <option value="1" {% if request.GET.status == "1" %} selected {% endif %}>Pending</option>
+                            <option value="2" {% if request.GET.status == "2" %} selected {% endif %}>Accepted</option>
+                            <option value="3" {% if request.GET.status == "3" %} selected {% endif %}>Rejected</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="employer-btn employer-btn--primary">
+                        Filter
+                    </button>
+                </form>
+
+                {% if applicants %}
+                    <div class="employer-applicant-grid">
+                        {% for applicant in applicants %}
+                            <article class="employer-applicant">
+                                <img src="{% static 'img/avatar.png' %}" alt="" class="employer-applicant-avatar">
+                                <div class="employer-applicant-body">
+                                    <h2 class="employer-applicant-name">
+                                        <a href="{% url 'jobs:applied-applicant-view' applicant.job.id applicant.id %}">
+                                            {{ applicant.user.get_full_name|default:applicant.user.email }}
+                                        </a>
+                                        {% if applicant.status == 1 %}
+                                            <span class="employer-badge employer-badge--warning">Pending</span>
+                                        {% elif applicant.status == 2 %}
+                                            <span class="employer-badge employer-badge--success">Accepted</span>
+                                        {% else %}
+                                            <span class="employer-badge employer-badge--danger">Rejected</span>
+                                        {% endif %}
+                                    </h2>
+
+                                    <p class="employer-applicant-meta">
+                                        Applied for <strong>{{ applicant.job.title }}</strong>
+                                        · {{ applicant.created_at|date:"M j, Y" }}
+                                    </p>
+
+                                    {% if applicant.user.profile.tags.all %}
+                                        <div class="employer-skill-list">
+                                            {% for tag in applicant.user.profile.tags.all %}
+                                                <span class="employer-skill">{{ tag.name }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="employer-actions">
+                                        <a href="{% url 'jobs:applied-applicant-view' applicant.job.id applicant.id %}"
+                                           class="employer-btn employer-btn--ghost">
+                                            Review
+                                        </a>
+                                        <a href="mailto:{{ applicant.user.email }}?subject=Regarding {{ applicant.job.title }}"
+                                           class="employer-btn employer-btn--ghost">
+                                            <i class="fa fa-envelope" aria-hidden="true"></i> Contact
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="employer-panel">
+                        <div class="employer-empty">
+                            <h3>No applicants found</h3>
+                            <p>{% if request.GET.status %}Try another status filter, or clear it to see everyone.{% else %}When candidates apply to your jobs, they will show up here.{% endif %}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if is_paginated %}
+                    <nav class="employer-pagination" aria-label="Applicants pagination">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}"
+                                       class="page-link">&laquo;</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                            {% endif %}
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                    <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a href="?page={{ i }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}"
+                                           class="page-link">{{ i }}</a>
+                                    </li>
+                                {% elif i == 1 or i == page_obj.paginator.num_pages %}
+                                    <li class="page-item">
+                                        <a href="?page={{ i }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}"
+                                           class="page-link">{{ i }}</a>
+                                    </li>
+                                {% elif i == page_obj.number|add:'-3' or i == page_obj.number|add:'3' %}
+                                    <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}"
+                                       class="page-link">&raquo;</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

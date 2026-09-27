@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}
+    About Us
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <section class="about-page">
+        <div class="container">
+            <div class="about-shell">
+                <header class="about-intro">
+                    <h1>About Django Jobs</h1>
+                    <p>An open-source job portal that helps candidates find roles and employers hire with less friction.</p>
+                </header>
+
+                <section class="about-panel" aria-labelledby="mission-heading">
+                    <h2 id="mission-heading">Our mission</h2>
+                    <p>
+                        We connect people with clear job opportunities and give employers a straightforward way to
+                        post openings, review applicants, and keep hiring organized.
+                    </p>
+                </section>
+
+                <section class="about-panel" aria-labelledby="offer-heading">
+                    <h2 id="offer-heading">What you can do here</h2>
+                    <ul class="about-list">
+                        <li>
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <span>Search jobs by title and location, then apply in a few steps.</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <span>Build and export a resume with the resume templates.</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <span>Post jobs, manage company profiles, and track applicants as an employer.</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <span>Save favorites and follow application status from your dashboard.</span>
+                        </li>
+                    </ul>
+                </section>
+
+                <div class="about-cta">
+                    <p>Ready to explore open roles or start hiring?</p>
+                    <a href="{% url 'jobs:jobs' %}" class="about-btn">Browse jobs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

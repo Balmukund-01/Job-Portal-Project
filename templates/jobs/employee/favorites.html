@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Favorites
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/employee.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <section class="employee-page">
+        <div class="container">
+            <div class="employee-shell">
+                <header class="employee-intro">
+                    <h1>Favorites</h1>
+                    <p>Jobs you saved to review later.</p>
+                </header>
+
+                {% if favorites %}
+                    <div class="employee-list">
+                        {% for favorite in favorites %}
+                            <article class="employee-item favorite-item">
+                                {% if favorite.job.company.logo %}
+                                    <img src="{{ favorite.job.company.logo.url }}" alt="" class="employee-item-logo">
+                                {% else %}
+                                    <div class="employee-item-logo-fallback" aria-hidden="true">
+                                        <i class="fa fa-building"></i>
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <h2>
+                                        <a href="{% url 'jobs:jobs-detail' favorite.job.id %}">{{ favorite.job.title }}</a>
+                                    </h2>
+                                    <p class="employee-item-meta">
+                                        {{ favorite.job.company.name }} · {{ favorite.job.location }}
+                                        · Posted {{ favorite.job.created_at|timesince }} ago
+                                    </p>
+                                </div>
+                                <div class="employee-item-side">
+                                    <span class="employee-badge employee-badge--accent">{{ favorite.job.get_type_display }}</span>
+                                    <a href="javascript:void(0)"
+                                       data-toggle="tooltip"
+                                       data-id="{{ favorite.job.id }}"
+                                       data-placement="top"
+                                       title="Remove from favourites"
+                                       class="employee-favorite job__star__link favorite"
+                                       aria-label="Remove from favourites">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="employee-empty">
+                        <h2>No favorites yet</h2>
+                        <p>Save jobs from the listings page to keep them here.</p>
+                        <a href="{% url 'jobs:jobs' %}" class="employee-btn employee-btn--primary">Browse jobs</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        let csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        function csrfSafeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        function removeFadeOut(el, speed) {
+            var seconds = speed / 1000;
+            el.style.transition = "opacity " + seconds + "s ease";
+            el.style.opacity = 0;
+            setTimeout(function () {
+                if (el.parentNode) {
+                    el.parentNode.removeChild(el);
+                }
+            }, speed);
+        }
+
+        $('.favorite-item .job__star__link').on('click', function () {
+            let job_id = $(this).data('id');
+            let item = $(this).closest('.favorite-item')[0];
+            let that = $(this);
+            $.ajax({
+                type: "POST",
+                url: "{% url 'jobs:favorite' %}",
+                data: {job_id},
+                success: function (res) {
+                    if (res.status === "added") {
+                        that.addClass('favorite');
+                        toastr.success(res.message);
+                    } else if (res.status === "removed") {
+                        document.activeElement.blur();
+                        that.removeClass('favorite');
+                        toastr.warning(res.message);
+                        removeFadeOut(item, 1000);
+                    }
+                }
+            })
+        });
+    </script>
+{% endblock %}

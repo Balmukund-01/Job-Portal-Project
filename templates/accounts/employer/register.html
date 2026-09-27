@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Employer Register
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <section class="auth-page">
+        <div class="container">
+            <div class="auth-shell">
+                <div class="auth-card">
+                    <h1>Create employer account</h1>
+                    <p>Already registered? <a href="{% url 'accounts:login' %}">Sign in</a></p>
+
+                    {% if form.errors %}
+                        {% for error in form.non_field_errors %}
+                            <div class="auth-alert" role="alert">{{ error|escape }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="auth-field">
+                                <label for="id_{{ field.name }}">{{ field.label }}</label>
+                                <input type="{{ field.field.widget.input_type }}"
+                                       class="form-control"
+                                       name="{{ field.name }}"
+                                       id="id_{{ field.name }}"
+                                       placeholder="{{ field.field.widget.attrs.placeholder }}">
+                                {% for error in field.errors %}
+                                    <span class="auth-field-error">{{ error|escape }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="auth-submit">
+                            <i class="fa fa-building" aria-hidden="true"></i> Create account
+                        </button>
+                    </form>
+
+                    <p class="auth-footer">
+                        Looking for work?
+                        <a href="{% url 'accounts:employee-register' %}">Register as candidate</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

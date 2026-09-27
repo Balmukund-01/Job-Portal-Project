@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/employee.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <section class="employee-page">
+        <div class="container">
+            <div class="employee-shell employee-shell--narrow">
+                <header class="employee-intro">
+                    <h1>Edit profile</h1>
+                    <p>Keep your details up to date for employers reviewing your applications.</p>
+                </header>
+
+                <div class="employee-panel">
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="employee-alert" role="alert">{{ field.label }}: {{ error|escape }}</div>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <div class="employee-alert" role="alert">{{ error|escape }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {% if field.name == 'gender' %}
+                                <div class="employee-field">
+                                    <label>Gender</label>
+                                    <div class="employee-radio-group">
+                                        <label class="employee-radio" for="gender-male">
+                                            <input type="radio" name="gender" id="gender-male" value="male"
+                                                   {% if field.value == 'male' %}checked{% endif %}>
+                                            Male
+                                        </label>
+                                        <label class="employee-radio" for="gender-female">
+                                            <input type="radio" name="gender" id="gender-female" value="female"
+                                                   {% if field.value == 'female' %}checked{% endif %}>
+                                            Female
+                                        </label>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="employee-field">
+                                    <label for="id_{{ field.name }}">{{ field.label }}</label>
+                                    <input type="{{ field.field.widget.input_type }}"
+                                           class="form-control"
+                                           name="{{ field.name }}"
+                                           id="id_{{ field.name }}"
+                                           value="{{ field.value|default_if_none:'' }}"
+                                           placeholder="{{ field.field.widget.attrs.placeholder }}">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <button type="submit" class="employee-btn employee-btn--primary employee-submit">
+                            Save changes
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Applicants
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/employer.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <section class="employer-page">
+        <div class="container">
+            <div class="employer-shell">
+                <a href="{% url 'jobs:employer-dashboard' %}" class="employer-back">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> Back to dashboard
+                </a>
+
+                <header class="employer-intro">
+                    <div>
+                        <h1>Applicants</h1>
+                        <p>People who applied for <strong>{{ job.title }}</strong>.</p>
+                    </div>
+                    <div class="employer-intro-actions">
+                        <a href="{% url 'jobs:jobs-detail' job.id %}" class="employer-btn employer-btn--secondary">
+                            View job
+                        </a>
+                    </div>
+                </header>
+
+                {% if applicants %}
+                    <div class="employer-applicant-grid">
+                        {% for applicant in applicants %}
+                            <article class="employer-applicant">
+                                <img src="{% static 'img/avatar.png' %}" alt="" class="employer-applicant-avatar">
+                                <div class="employer-applicant-body">
+                                    <h2 class="employer-applicant-name">
+                                        <a href="{% url 'jobs:applied-applicant-view' applicant.job.id applicant.id %}">
+                                            {{ applicant.user.get_full_name|default:applicant.user.email }}
+                                        </a>
+                                        {% if applicant.status == 1 %}
+                                            <span class="employer-badge employer-badge--warning">Pending</span>
+                                        {% elif applicant.status == 2 %}
+                                            <span class="employer-badge employer-badge--success">Accepted</span>
+                                        {% else %}
+                                            <span class="employer-badge employer-badge--danger">Rejected</span>
+                                        {% endif %}
+                                    </h2>
+
+                                    {% if applicant.user.profile.tags.all %}
+                                        <div class="employer-skill-list">
+                                            {% for tag in applicant.user.profile.tags.all %}
+                                                <span class="employer-skill">{{ tag.name }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                    <p class="employer-applicant-meta">
+                                        Applied {{ applicant.created_at|date:"M j, Y" }}
+                                    </p>
+
+                                    <div class="employer-actions">
+                                        <a href="{% url 'jobs:applied-applicant-view' applicant.job.id applicant.id %}"
+                                           class="employer-btn employer-btn--ghost">
+                                            Review
+                                        </a>
+                                        <a href="mailto:{{ applicant.user.email }}?subject=Regarding {{ job.title }}"
+                                           class="employer-btn employer-btn--ghost">
+                                            <i class="fa fa-envelope" aria-hidden="true"></i> Contact
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="employer-panel">
+                        <div class="employer-empty">
+                            <h3>No applicants yet</h3>
+                            <p>When candidates apply to this role, they will appear here.</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if is_paginated %}
+                    <nav class="employer-pagination" aria-label="Applicants pagination">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo;</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                            {% endif %}
+                            {% for i in page_obj.paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                    <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                                    <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+                                {% elif i == 1 or i == page_obj.paginator.num_pages %}
+                                    <li class="page-item"><a href="?page={{ i }}" class="page-link">{{ i }}</a></li>
+                                {% elif i == page_obj.number|add:'-3' or i == page_obj.number|add:'3' %}
+                                    <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a href="?page={{ page_obj.next_page_number }}" class="page-link">&raquo;</a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

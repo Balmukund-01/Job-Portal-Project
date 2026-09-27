@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Employee Register
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <section class="auth-page">
+        <div class="container">
+            <div class="auth-shell">
+                <div class="auth-card">
+                    <h1>Create candidate account</h1>
+                    <p>Already registered? <a href="{% url 'accounts:login' %}">Sign in</a></p>
+
+                    {% if form.errors %}
+                        {% for error in form.non_field_errors %}
+                            <div class="auth-alert" role="alert">{{ error|escape }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {% if field.name == 'gender' %}
+                                <div class="auth-field">
+                                    <label>Gender</label>
+                                    <div class="auth-radio-group">
+                                        <label class="auth-radio" for="gender-male">
+                                            <input type="radio" name="gender" id="gender-male" value="male"
+                                                   {% if field.value == 'male' %}checked{% endif %}>
+                                            Male
+                                        </label>
+                                        <label class="auth-radio" for="gender-female">
+                                            <input type="radio" name="gender" id="gender-female" value="female"
+                                                   {% if field.value == 'female' %}checked{% endif %}>
+                                            Female
+                                        </label>
+                                    </div>
+                                    {% for error in field.errors %}
+                                        <span class="auth-field-error">{{ error|escape }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="auth-field">
+                                    <label for="id_{{ field.name }}">{{ field.label }}</label>
+                                    <input type="{{ field.field.widget.input_type }}"
+                                           class="form-control"
+                                           name="{{ field.name }}"
+                                           id="id_{{ field.name }}"
+                                           placeholder="{{ field.field.widget.attrs.placeholder }}">
+                                    {% for error in field.errors %}
+                                        <span class="auth-field-error">{{ error|escape }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <button type="submit" class="auth-submit">
+                            <i class="fa fa-user-plus" aria-hidden="true"></i> Create account
+                        </button>
+                    </form>
+
+                    <p class="auth-footer">
+                        Hiring instead?
+                        <a href="{% url 'accounts:employer-register' %}">Register as employer</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
