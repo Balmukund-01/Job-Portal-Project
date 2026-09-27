@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="228" height="54" viewBox="0 0 228 54" role="img" aria-labelledby="title">
+  <title id="title">Nexus Careers</title>
+  <rect x="2" y="5" width="44" height="44" rx="12" fill="#174c3a"/>
+  <path d="M14 20h20v16H14zM19 20v-3a5 5 0 0 1 10 0v3m-15 5h20m-12 0v3h4v-3" fill="none" stroke="#f4ecdc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+  <text x="57" y="28" fill="#17251f" font-family="Manrope,Arial,sans-serif" font-size="22" font-weight="800" letter-spacing="1.4">NEXUS</text>
+  <text x="59" y="43" fill="#8a6d3b" font-family="Arial,sans-serif" font-size="8" font-weight="700" letter-spacing="3.2">CAREERS</text>
+</svg>

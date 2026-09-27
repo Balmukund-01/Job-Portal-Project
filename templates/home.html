@@ -343,10 +343,9 @@ Home
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-7">
-                <span class="badge badge-success mb-3">#1 Job Platform in Bangladesh</span>
-                <h1>Popular Job Categories For Our <span class="highlight">Candidates</span></h1>
-                <p class="sub mb-4">Search jobs from trusted companies, filter by location and skills, and apply faster
-                    with a modern job workflow.</p>
+                <span class="badge badge-success mb-3"><i class="fa fa-briefcase" aria-hidden="true"></i> A better way to find your next role</span>
+                <h1>Make your next career move <span class="highlight">count.</span></h1>
+                <p class="sub mb-4">Discover thoughtful opportunities from trusted companies. Find work that fits your skills, goals, and life.</p>
                 <form method="get" action="{% url 'jobs:search' %}" class="hero-search">
                     <div class="form-row align-items-center">
                         <div class="col-md-5 mb-2 mb-md-0">
@@ -500,8 +499,7 @@ Home
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title-v2">New Way To <span class="accent">Get A Job</span></h2>
-            <p class="text-muted mt-3 mb-0">Upon gaining entry to the Jobboard platform, your initial task involves
-                inputting your initial team positions or roles.</p>
+            <p class="text-muted mt-3 mb-0">A simpler, more considered way to discover roles and connect with growing teams.</p>
         </div>
         <div class="row">
             <div class="col-md-4 mb-4">
@@ -551,28 +549,32 @@ Home
         </div>
         <div class="row">
             <div class="col-6 col-md-3 mb-3">
-                <div class="cat-card">
-                    <h6>Graphics & Design</h6>
-                    <p class="mb-0 text-muted">Creative roles</p>
-                </div>
+                <a class="cat-card" href="{% url 'jobs:search' %}?position=designer">
+                    <span class="cat-card__icon"><i class="fa fa-paint-brush" aria-hidden="true"></i></span>
+                    <span class="cat-card__copy"><strong>Graphics &amp; Design</strong><small>Creative roles</small></span>
+                    <i class="fa fa-angle-right cat-card__arrow" aria-hidden="true"></i>
+                </a>
             </div>
             <div class="col-6 col-md-3 mb-3">
-                <div class="cat-card">
-                    <h6>Programming</h6>
-                    <p class="mb-0 text-muted">Software engineering</p>
-                </div>
+                <a class="cat-card" href="{% url 'jobs:search' %}?position=developer">
+                    <span class="cat-card__icon"><i class="fa fa-code" aria-hidden="true"></i></span>
+                    <span class="cat-card__copy"><strong>Programming</strong><small>Software engineering</small></span>
+                    <i class="fa fa-angle-right cat-card__arrow" aria-hidden="true"></i>
+                </a>
             </div>
             <div class="col-6 col-md-3 mb-3">
-                <div class="cat-card">
-                    <h6>Digital Marketing</h6>
-                    <p class="mb-0 text-muted">Growth & SEO</p>
-                </div>
+                <a class="cat-card" href="{% url 'jobs:search' %}?position=marketing">
+                    <span class="cat-card__icon"><i class="fa fa-line-chart" aria-hidden="true"></i></span>
+                    <span class="cat-card__copy"><strong>Digital Marketing</strong><small>Growth &amp; SEO</small></span>
+                    <i class="fa fa-angle-right cat-card__arrow" aria-hidden="true"></i>
+                </a>
             </div>
             <div class="col-6 col-md-3 mb-3">
-                <div class="cat-card">
-                    <h6>Finance</h6>
-                    <p class="mb-0 text-muted">Accounting & audit</p>
-                </div>
+                <a class="cat-card" href="{% url 'jobs:search' %}?position=finance">
+                    <span class="cat-card__icon"><i class="fa fa-pie-chart" aria-hidden="true"></i></span>
+                    <span class="cat-card__copy"><strong>Finance</strong><small>Accounting &amp; audit</small></span>
+                    <i class="fa fa-angle-right cat-card__arrow" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -656,7 +658,7 @@ Home
 <section class="section-v2 alt">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title-v2">How <span class="accent">JobPilot</span> Works</h2>
+            <h2 class="section-title-v2">How <span class="accent">Nexus Careers</span> Works</h2>
         </div>
         <div class="row justify-content-center">
             <div class="col-6 col-md-3">
@@ -699,21 +701,9 @@ Home
         <div class="row align-items-center">
             <div class="col-md-5 mb-4 mb-md-0">
                 <div class="journey-imgs">
-                    <div class="img-block tall"
-                        style="background:linear-gradient(160deg,#E8FAF3,#D1FAE5); display:flex; align-items:center; justify-content:center;">
-                        <svg viewBox="0 0 160 220" xmlns="http://www.w3.org/2000/svg" width="160" height="220">
-                            <rect x="20" y="30" width="120" height="160" rx="12" fill="#fff" stroke="#E4E4E7"
-                                stroke-width="1.5" />
-                            <circle cx="80" cy="75" r="24" fill="#E8FAF3" />
-                            <circle cx="80" cy="75" r="16" fill="#0BAB64" />
-                            <text x="74" y="80" font-family="Inter" font-size="14" fill="#fff"
-                                font-weight="800">✓</text>
-                            <rect x="40" y="112" width="80" height="7" rx="3" fill="#18181B" />
-                            <rect x="50" y="126" width="60" height="5" rx="2" fill="#A1A1AA" />
-                            <rect x="30" y="148" width="100" height="28" rx="6" fill="#0BAB64" />
-                            <text x="52" y="167" font-family="Inter" font-size="11" fill="#fff" font-weight="600">Get
-                                Hired</text>
-                        </svg>
+                    <div class="img-block tall journey-photo">
+                        <img src="{% static 'img/featured1.jpg' %}" alt="A candidate exploring a career opportunity">
+                        <span class="journey-photo__caption"><i class="fa fa-check-circle" aria-hidden="true"></i> Your next chapter starts here</span>
                     </div>
                     <div class="img-block"
                         style="background:linear-gradient(160deg,#EFF6FF,#DBEAFE); display:flex; align-items:center; justify-content:center;">
@@ -743,7 +733,7 @@ Home
             </div>
             <div class="col-md-7">
                 <h2 class="section-title-v2">Start <span class="accent">Your Journey</span> With Us</h2>
-                <p class="mt-3 font-weight-bold">Millions of jobs, find the one that suits you.</p>
+                <p class="mt-3 font-weight-bold">Find a role that fits your strengths and the future you want to build.</p>
                 <div class="check-item">
                     <span class="check-icon"><i class="fa fa-check"></i></span>
                     <span>Get matched with jobs based on your profile and preferences.</span>
@@ -766,16 +756,11 @@ Home
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-7 mb-4 mb-md-0">
-                <h2 class="mb-3">Get the JobPilot Search App</h2>
-                <p class="mb-4">Search jobs, save favorites, and apply on the go with a seamless mobile experience.</p>
-                <a href="#" class="store-btn">
-                    <i class="fa fa-android fa-lg text-success"></i>
-                    <span>Google Play</span>
-                </a>
-                <a href="#" class="store-btn">
-                    <i class="fa fa-apple fa-lg"></i>
-                    <span>App Store</span>
-                </a>
+                <span class="eyebrow eyebrow--light">MAKE YOUR NEXT MOVE</span>
+                <h2 class="mb-3">Good work starts with the right opportunity.</h2>
+                <p class="mb-4">Explore open roles, save the ones you love, and keep your applications moving from one place.</p>
+                <a href="{% url 'jobs:jobs' %}" class="store-btn"><i class="fa fa-search" aria-hidden="true"></i><span>Explore open jobs</span></a>
+                <a href="{% url 'accounts:employee-register' %}" class="store-btn store-btn--outline"><i class="fa fa-user-plus" aria-hidden="true"></i><span>Create your profile</span></a>
             </div>
             <div class="col-md-5 text-center">
                 <div class="phone-mockup d-flex justify-content-center" style="gap:16px;">
